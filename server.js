@@ -7,6 +7,10 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+app.get("*", function (req, res) {
+  res.send("I am the heroku test application");
+});
+
 //middleware functions for express to format data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -29,6 +33,7 @@ app.get("/api/notes", function (req, res) {
     res.json(JSON.parse(data));
   });
 });
+
 app.post("/api/notes", function (req, res) {
   //create note from req.body aka saveNote
   const note = {
@@ -36,13 +41,27 @@ app.post("/api/notes", function (req, res) {
     title: req.body.title,
     text: req.body.text,
   };
-//   console.log(note);
-//attach note to 
-//.push?
-  req.body(note);
+  fs.readFile(".?db/db.json", "utf8", function (err, data) {
+    var parsedData = JSON.parse(data);
+
+    console.log(data);
+    console.log("parsed data", parsedData);
+
+    parsedData.push(note);
+    console.log("parsed data with push", parsedData);
+
+    parsedData = JSON.stringify(parsedData);
+    console.log("stringified data with push", parsedData);
+
+    fs.writeFile("./db/db.json", parsedData, function (err) {
+      if (err) throw err;
+      console.log("saved");
+    })
+  })
 });
+
 app.delete("/api/notes/:id", function (req, res) {
-  //deletes notes based on id aka deleteNote
+  //deletes notes based on id aka deleteNote. Curly brackets destructure
   const { id } = req.params;
 });
 
