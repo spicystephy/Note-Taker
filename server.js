@@ -55,7 +55,10 @@ app.post("/api/notes", function (req, res) {
 
 app.delete("/api/notes/:id", function (req, res) {
   //deletes notes based on id aka deleteNote. Curly brackets destructure so id not needed after params
+  //.slice
+  //for loop 
   const { id } = req.params;
+  res.send(id)
 
 });
 
