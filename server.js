@@ -54,8 +54,9 @@ app.post("/api/notes", function (req, res) {
 });
 
 app.delete("/api/notes/:id", function (req, res) {
-  //deletes notes based on id aka deleteNote. Curly brackets destructure
+  //deletes notes based on id aka deleteNote. Curly brackets destructure so id not needed after params
   const { id } = req.params;
+
 });
 
 app.listen(PORT, () => console.log("App listening on port " + PORT));
