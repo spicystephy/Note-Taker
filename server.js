@@ -4,12 +4,11 @@ const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
-const PORT = process.env.PORT || 3000;
-
-app.get("*", function (req, res) {
-  res.send("I am the heroku test application");
-});
+// app.get("*", function (req, res) {
+//   res.send("I am the heroku test application");
+// });
 
 //middleware functions for express to format data
 app.use(express.urlencoded({ extended: true }));
@@ -41,22 +40,16 @@ app.post("/api/notes", function (req, res) {
     title: req.body.title,
     text: req.body.text,
   };
-  fs.readFile(".?db/db.json", "utf8", function (err, data) {
-    var parsedData = JSON.parse(data);
+  fs.readFile("./db/db.json", "utf8", function (err, data) {
+    var parseNote = JSON.parse(data);
+    parseNote.push(note);
+    parseNote = JSON.stringify(parseNote);
 
-    console.log(data);
-    console.log("parsed data", parsedData);
-
-    parsedData.push(note);
-    console.log("parsed data with push", parsedData);
-
-    parsedData = JSON.stringify(parsedData);
-    console.log("stringified data with push", parsedData);
-
-    fs.writeFile("./db/db.json", parsedData, function (err) {
+    fs.writeFile("./db/db.json", parseNote, function (err) {
       if (err) throw err;
-      console.log("saved");
     })
+    //once note is saved, will populate on left and redirect to blank note
+    res.redirect("back")
   })
 });
 
